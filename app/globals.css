@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ──────────────────────────────────────────── */
+:root {
+  /* Colors */
+  --color-night:      #0F0D0B;
+  --color-charcoal:   #1C1916;
+  --color-brown:      #312726;
+  --color-cream:      #FFF8ED;
+  --color-sand:       #E8D5B0;
+  --color-gold:       #C9A227;
+  --color-red:        #B5341C;
+  --color-atlas:      #2D4A3E;
+  --color-muted:      rgba(255, 248, 237, 0.6);
+  --color-muted-dark: rgba(15, 13, 11, 0.7);
+
+  /* Typography */
+  --font-display: var(--font-unbounded), 'Unbounded', sans-serif;
+  --font-body:    var(--font-montserrat), 'Montserrat', sans-serif;
+
+  /* Spacing */
+  --section-py:   6rem;
+  --container-w:  min(1280px, 92%);
+
+  /* Motion */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-slow:  1.8s;
+  --duration-base:  0.6s;
+
+  /* Radius */
+  --radius-card:   16px;
+  --radius-btn:    8px;
+  --radius-img:    12px;
+}
+
+/* ─── Tailwind v4 theme extension ───────────────────────────── */
+@theme inline {
+  --color-night:    #0F0D0B;
+  --color-charcoal: #1C1916;
+  --color-brown:    #312726;
+  --color-cream:    #FFF8ED;
+  --color-sand:     #E8D5B0;
+  --color-gold:     #C9A227;
+  --color-red:      #B5341C;
+  --color-atlas:    #2D4A3E;
+  --font-display: var(--font-unbounded), 'Unbounded', sans-serif;
+  --font-body:    var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+}
+
+body {
+  background: var(--color-night);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Typography Scale ───────────────────────────────────────── */
+.display-hero {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.display-section {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.display-card {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.body-lg {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.body-sm {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ─── Layout ─────────────────────────────────────────────────── */
+.container {
+  width: var(--container-w);
+  margin-inline: auto;
+}
+
+.section {
+  padding: var(--section-py) 0;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-cinematic);
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+
+.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-night);
+  border-color: var(--color-gold);
+}
+
+.btn-gold:hover {
+  background: transparent;
+  color: var(--color-gold);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-cream);
+  border-color: var(--color-cream);
+}
+
+.btn-outline:hover {
+  background: var(--color-cream);
+  color: var(--color-night);
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #fff;
+  border-color: #25D366;
+}
+
+.btn-whatsapp:hover {
+  background: transparent;
+  color: #25D366;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────── */
+.card-dark {
+  background: var(--color-charcoal);
+  border: 1px solid rgba(255, 248, 237, 0.08);
+  border-radius: var(--radius-card);
+  transition: border-color 0.3s ease, transform 0.4s var(--ease-cinematic);
+}
+
+.card-dark:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-6px);
+}
+
+.card-cream {
+  background: var(--color-cream);
+  color: var(--color-night);
+  border-radius: var(--radius-card);
+}
+
+/* ─── Gold accent line ───────────────────────────────────────── */
+.gold-line {
+  width: 2.5rem;
+  height: 2px;
+  background: var(--color-gold);
+  display: block;
+}
+
+/* ─── Grain texture overlay ──────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ─── Marquee ────────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Scroll progress bar ────────────────────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color-gold);
+  z-index: 9999;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ─── Dot grid pattern ───────────────────────────────────────── */
+.dot-pattern {
+  background-image: radial-gradient(circle, rgba(255,248,237,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ─── Utility ────────────────────────────────────────────────── */
+.overflow-clip {
+  overflow: hidden;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+/* ─── Admin panel ────────────────────────────────────────────── */
+.admin-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: var(--color-charcoal);
+  border-right: 1px solid rgba(255,248,237,0.08);
+}
+
+.admin-content {
+  flex: 1;
+  background: var(--color-night);
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.admin-input {
+  background: var(--color-brown);
+  border: 1px solid rgba(255,248,237,0.12);
+  border-radius: 8px;
+  color: var(--color-cream);
+  padding: 0.625rem 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: var(--color-gold);
+}
+
+.admin-label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  display: block;
+  margin-bottom: 0.375rem;
+}
+
+.admin-card {
+  background: var(--color-charcoal);
+  border: 1px solid rgba(255,248,237,0.07);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background: rgba(45, 74, 62, 0.4);
+  color: #6fcf97;
+  border: 1px solid rgba(111, 207, 151, 0.2);
+}
+
+.status-inactive {
+  background: rgba(181, 52, 28, 0.2);
+  color: #eb5757;
+  border: 1px solid rgba(235, 87, 87, 0.2);
+}
