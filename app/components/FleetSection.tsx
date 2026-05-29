@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import gsap from "gsap";
@@ -9,7 +9,8 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const bikes = [
+// Hardcoded fallback data
+const defaultBikes = [
   {
     id: "scooter",
     category: "Scooter Urbain",
@@ -31,7 +32,8 @@ const bikes = [
     ],
     accentColor: "var(--color-gold)",
     gradient: "linear-gradient(135deg, #2a2218 0%, #1C1916 100%)",
-    description: "Parfait pour explorer la Médina, le souk et les jardins. Léger, maniable, économique. Aucun permis moto nécessaire — votre permis voiture suffit.",
+    description:
+      "Parfait pour explorer la Médina, le souk et les jardins. Léger, maniable, économique. Aucun permis moto nécessaire — votre permis voiture suffit.",
   },
   {
     id: "enduro",
@@ -54,7 +56,8 @@ const bikes = [
     ],
     accentColor: "var(--color-red)",
     gradient: "linear-gradient(135deg, #2a1a18 0%, #1C1916 100%)",
-    description: "La monture idéale pour le col du Tizi n'Tichka (2 260 m), la vallée de l'Ourika et les pistes de l'Agafay. Suspension longue course, réservoir 15L.",
+    description:
+      "La monture idéale pour le col du Tizi n'Tichka (2 260 m), la vallée de l'Ourika et les pistes de l'Agafay. Suspension longue course, réservoir 15L.",
   },
   {
     id: "touring",
@@ -77,11 +80,67 @@ const bikes = [
     ],
     accentColor: "var(--color-atlas)",
     gradient: "linear-gradient(135deg, #181e1c 0%, #1C1916 100%)",
-    description: "Pour les longs trajets Marrakech–Essaouira, Marrakech–Ouarzazate. Confort touring, navigation GPS intégré, valises disponibles en option.",
+    description:
+      "Pour les longs trajets Marrakech–Essaouira, Marrakech–Ouarzazate. Confort touring, navigation GPS intégré, valises disponibles en option.",
   },
 ];
 
-function BikeCard({ bike, index }: { bike: typeof bikes[0]; index: number }) {
+type BikeData = typeof defaultBikes[0];
+
+// Map API Bike (from store) to display format
+function mapApiBike(b: {
+  id: string;
+  category: string;
+  name: string;
+  engine: string;
+  range: string;
+  terrain: string;
+  priceMAD: number;
+  priceEUR: number;
+  imageUrl: string;
+  description: string;
+}): BikeData {
+  const cat = b.category as "scooter" | "enduro" | "touring";
+  const accentMap: Record<string, string> = {
+    scooter: "var(--color-gold)",
+    enduro: "var(--color-red)",
+    touring: "var(--color-atlas)",
+  };
+  const gradientMap: Record<string, string> = {
+    scooter: "linear-gradient(135deg, #2a2218 0%, #1C1916 100%)",
+    enduro: "linear-gradient(135deg, #2a1a18 0%, #1C1916 100%)",
+    touring: "linear-gradient(135deg, #181e1c 0%, #1C1916 100%)",
+  };
+  const badgeMap: Record<string, string> = {
+    scooter: "Le + populaire",
+    enduro: "Coup de cœur aventure",
+    touring: "Premium",
+  };
+  return {
+    id: b.id,
+    category: b.name,
+    name: b.name,
+    tagline: b.terrain,
+    engine: b.engine,
+    range: b.range,
+    terrain: b.terrain,
+    priceMAD: b.priceMAD,
+    priceEUR: b.priceEUR,
+    image: b.imageUrl,
+    badge: badgeMap[cat] ?? b.category,
+    badgeColor: accentMap[cat] ?? "var(--color-gold)",
+    specs: [
+      { label: "Moteur", value: b.engine },
+      { label: "Autonomie", value: b.range },
+      { label: "Terrain", value: b.terrain },
+    ],
+    accentColor: accentMap[cat] ?? "var(--color-gold)",
+    gradient: gradientMap[cat] ?? "linear-gradient(135deg, #2a2218 0%, #1C1916 100%)",
+    description: b.description,
+  };
+}
+
+function BikeCard({ bike, index }: { bike: BikeData; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -94,8 +153,8 @@ function BikeCard({ bike, index }: { bike: typeof bikes[0]; index: number }) {
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
-    x.set((e.clientX - rect.left - rect.width / 2));
-    y.set((e.clientY - rect.top - rect.height / 2));
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
   };
 
   const handleMouseLeave = () => {
@@ -134,7 +193,16 @@ function BikeCard({ bike, index }: { bike: typeof bikes[0]; index: number }) {
 
           {/* Badge */}
           <div className="absolute top-4 left-4">
-            <span className="label" style={{ background: `${bike.accentColor}22`, color: bike.accentColor, border: `1px solid ${bike.accentColor}44`, padding: "0.25rem 0.75rem", borderRadius: "999px" }}>
+            <span
+              className="label"
+              style={{
+                background: `${bike.accentColor}22`,
+                color: bike.accentColor,
+                border: `1px solid ${bike.accentColor}44`,
+                padding: "0.25rem 0.75rem",
+                borderRadius: "999px",
+              }}
+            >
               {bike.badge}
             </span>
           </div>
@@ -143,15 +211,23 @@ function BikeCard({ bike, index }: { bike: typeof bikes[0]; index: number }) {
         {/* Content */}
         <div className="flex flex-col flex-1 p-6 gap-4">
           <div style={{ width: "2rem", height: "2px", background: bike.accentColor }} />
-          <p className="label" style={{ color: bike.accentColor }}>{bike.category}</p>
-          <h3 className="display-card" style={{ color: "var(--color-cream)" }}>{bike.name}</h3>
-          <p className="body-sm" style={{ color: "var(--color-muted)" }}>{bike.description}</p>
+          <p className="label" style={{ color: bike.accentColor }}>
+            {bike.category}
+          </p>
+          <h3 className="display-card" style={{ color: "var(--color-cream)" }}>
+            {bike.name}
+          </h3>
+          <p className="body-sm" style={{ color: "var(--color-muted)" }}>
+            {bike.description}
+          </p>
 
           {/* Specs */}
           <div className="grid grid-cols-2 gap-3 mt-1" style={{ borderTop: "1px solid rgba(255,248,237,0.07)", paddingTop: "1rem" }}>
             {bike.specs.map((s) => (
               <div key={s.label}>
-                <p className="label mb-0.5" style={{ color: "var(--color-muted)", fontSize: "0.58rem" }}>{s.label}</p>
+                <p className="label mb-0.5" style={{ color: "var(--color-muted)", fontSize: "0.58rem" }}>
+                  {s.label}
+                </p>
                 <p style={{ fontFamily: "var(--font-display)", fontSize: "0.78rem", color: "var(--color-cream)", fontWeight: 600 }}>{s.value}</p>
               </div>
             ))}
@@ -160,20 +236,34 @@ function BikeCard({ bike, index }: { bike: typeof bikes[0]; index: number }) {
           {/* Terrain tags */}
           <div className="flex flex-wrap gap-1.5">
             {bike.terrain.split(" · ").map((t) => (
-              <span key={t} className="label" style={{ background: "rgba(255,248,237,0.05)", padding: "0.2rem 0.5rem", borderRadius: "4px", color: "var(--color-muted)", fontSize: "0.58rem" }}>{t}</span>
+              <span
+                key={t}
+                className="label"
+                style={{ background: "rgba(255,248,237,0.05)", padding: "0.2rem 0.5rem", borderRadius: "4px", color: "var(--color-muted)", fontSize: "0.58rem" }}
+              >
+                {t}
+              </span>
             ))}
           </div>
 
           {/* Price + CTA */}
           <div className="flex items-center justify-between mt-auto pt-4" style={{ borderTop: "1px solid rgba(255,248,237,0.07)" }}>
             <div>
-              <p className="label mb-0.5" style={{ color: "var(--color-muted)", fontSize: "0.58rem" }}>À partir de / jour</p>
+              <p className="label mb-0.5" style={{ color: "var(--color-muted)", fontSize: "0.58rem" }}>
+                À partir de / jour
+              </p>
               <p style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, color: bike.accentColor, lineHeight: 1 }}>
-                {bike.priceMAD} MAD <span style={{ fontSize: "0.75rem", color: "var(--color-muted)", fontWeight: 400 }}>/ €{bike.priceEUR}</span>
+                {bike.priceMAD} MAD{" "}
+                <span style={{ fontSize: "0.75rem", color: "var(--color-muted)", fontWeight: 400 }}>/ €{bike.priceEUR}</span>
               </p>
             </div>
-            <motion.a href="#booking" className="btn" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-              style={{ background: "transparent", border: `1.5px solid ${bike.accentColor}`, color: bike.accentColor, padding: "0.5rem 1.25rem", fontSize: "0.65rem" }}>
+            <motion.a
+              href="#booking"
+              className="btn"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              style={{ background: "transparent", border: `1.5px solid ${bike.accentColor}`, color: bike.accentColor, padding: "0.5rem 1.25rem", fontSize: "0.65rem" }}
+            >
               Réserver
             </motion.a>
           </div>
@@ -183,7 +273,52 @@ function BikeCard({ bike, index }: { bike: typeof bikes[0]; index: number }) {
   );
 }
 
+function SkeletonCard() {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #2a2218 0%, #1C1916 100%)",
+        borderRadius: "var(--radius-card)",
+        border: "1px solid rgba(255,248,237,0.07)",
+        overflow: "hidden",
+        height: "560px",
+      }}
+    >
+      <div style={{ height: "240px", background: "rgba(255,248,237,0.05)", animation: "pulse 1.5s ease-in-out infinite" }} />
+      <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {[80, 120, 200, 60].map((w, i) => (
+          <div
+            key={i}
+            style={{ height: "12px", width: `${w}px`, background: "rgba(255,248,237,0.08)", borderRadius: "4px", animation: "pulse 1.5s ease-in-out infinite" }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function FleetSection() {
+  const [bikes, setBikes] = useState<BikeData[]>(defaultBikes);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/bikes")
+      .then((r) => r.json())
+      .then((data: unknown) => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Check if it looks like API bikes (has imageUrl) vs display bikes
+          const first = data[0] as Record<string, unknown>;
+          if ("imageUrl" in first) {
+            setBikes(data.map(mapApiBike));
+          }
+        }
+      })
+      .catch(() => {
+        // Keep defaults on error
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <section id="fleet" className="section overflow-clip">
       <div className="container">
@@ -194,9 +329,13 @@ export default function FleetSection() {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>Notre Flotte · Marrakech</p>
+          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>
+            Notre Flotte · Marrakech
+          </p>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <h2 className="display-section" style={{ color: "var(--color-cream)" }}>LA FLOTTE</h2>
+            <h2 className="display-section" style={{ color: "var(--color-cream)" }}>
+              LA FLOTTE
+            </h2>
             <p className="body-lg" style={{ color: "var(--color-muted)", maxWidth: "400px" }}>
               Chaque moto est révisée, assurée et prête à partir. Livraison à votre riad ou hôtel incluse.
             </p>
@@ -205,7 +344,9 @@ export default function FleetSection() {
         </motion.div>
 
         <div className="grid gap-6" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-          {bikes.map((bike, i) => <BikeCard key={bike.id} bike={bike} index={i} />)}
+          {loading
+            ? [0, 1, 2].map((i) => <SkeletonCard key={i} />)
+            : bikes.map((bike, i) => <BikeCard key={bike.id} bike={bike} index={i} />)}
         </div>
 
         {/* Bottom note */}
@@ -218,8 +359,12 @@ export default function FleetSection() {
         >
           {["Casque ECE inclus", "Contrôle technique à jour", "Livraison Médina gratuite", "Assistance 24h/24"].map((item) => (
             <div key={item} className="flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span className="body-sm" style={{ color: "var(--color-muted)" }}>{item}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" strokeWidth="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span className="body-sm" style={{ color: "var(--color-muted)" }}>
+                {item}
+              </span>
             </div>
           ))}
         </motion.div>

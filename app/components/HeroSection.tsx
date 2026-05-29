@@ -1,33 +1,34 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import SplitText from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const destinations = ["Atlas", "Agafay", "Essaouira", "Marrakech"];
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
   const imgRef  = useRef<HTMLDivElement>(null);
-  const headRef = useRef<HTMLHeadingElement>(null);
+  const [destIndex, setDestIndex] = useState(0);
 
+  // Cycle destinations
+  useEffect(() => {
+    const t = setInterval(() => setDestIndex((i) => (i + 1) % destinations.length), 2500);
+    return () => clearInterval(t);
+  }, []);
+
+  // Parallax
   useGSAP(() => {
     gsap.to(imgRef.current, {
       scale: 1.08,
       ease: "none",
       scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: 2 },
     });
-    if (headRef.current) {
-      const split = new SplitText(headRef.current, { type: "chars" });
-      gsap.from(split.chars, {
-        opacity: 0, y: 40, stagger: 0.04, duration: 1.1, ease: "power4.out", delay: 0.3,
-      });
-      return () => split.revert();
-    }
   }, { scope: heroRef });
 
   return (
@@ -48,54 +49,108 @@ export default function HeroSection() {
           sizes="100vw"
         />
         <div className="absolute inset-0" style={{
-          background: "linear-gradient(180deg, rgba(15,13,11,0.25) 0%, rgba(15,13,11,0.45) 50%, rgba(15,13,11,0.85) 100%)"
+          background: "linear-gradient(180deg, rgba(15,13,11,0.15) 0%, rgba(15,13,11,0.4) 45%, rgba(15,13,11,0.88) 100%)"
         }} />
       </div>
 
       {/* Content */}
       <div
         className="container relative z-10 h-full flex flex-col justify-end"
-        style={{ paddingBottom: "clamp(5rem, 10vh, 8rem)" }}
+        style={{ paddingBottom: "clamp(4rem, 9vh, 7rem)" }}
       >
         {/* Eyebrow */}
         <motion.div
-          className="flex items-center gap-3 mb-5"
+          className="flex items-center gap-3 mb-4"
           initial={{ opacity: 0, x: -16 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <div style={{ width: "28px", height: "1.5px", background: "var(--color-gold)", flexShrink: 0 }} />
+          <div style={{ width: "24px", height: "1.5px", background: "var(--color-gold)", flexShrink: 0 }} />
           <p className="label" style={{ color: "var(--color-gold)" }}>
             Location de Moto · Marrakech
           </p>
         </motion.div>
 
-        {/* Headline */}
-        <h1
-          ref={headRef}
-          className="display-hero"
-          style={{ color: "var(--color-cream)", lineHeight: 0.92, marginBottom: "1.5rem" }}
-        >
-          Explorez le Maroc.
-        </h1>
+        {/* Headline — two lines, controlled size */}
+        <div style={{ marginBottom: "1.25rem" }}>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35 }}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.6rem, 3.5vw, 3rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              color: "var(--color-cream)",
+              lineHeight: 1.1,
+              textTransform: "uppercase",
+            }}
+          >
+            Louez. Partez.
+          </motion.p>
 
-        {/* Subline */}
+          {/* Animated destination line */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.2rem" }}
+          >
+            <span style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.6rem, 3.5vw, 3rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              color: "rgba(255,248,237,0.4)",
+              textTransform: "uppercase",
+            }}>
+              Découvrez
+            </span>
+
+            {/* Cycling destination word */}
+            <div style={{ overflow: "hidden", height: "clamp(2rem, 4.5vw, 3.8rem)", display: "flex", alignItems: "center" }}>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={destIndex}
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  exit={{ y: "-100%", opacity: 0 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(1.6rem, 3.5vw, 3rem)",
+                    fontWeight: 800,
+                    letterSpacing: "-0.03em",
+                    color: "var(--color-gold)",
+                    textTransform: "uppercase",
+                    display: "block",
+                  }}
+                >
+                  {destinations[destIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Sub */}
         <motion.p
-          className="body-lg"
-          style={{ color: "rgba(255,248,237,0.7)", maxWidth: "460px", marginBottom: "2.5rem", lineHeight: 1.65 }}
-          initial={{ opacity: 0, y: 14 }}
+          style={{ color: "rgba(255,248,237,0.6)", maxWidth: "420px", marginBottom: "2.25rem", lineHeight: 1.65 }}
+          className="body-sm"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.55 }}
+          transition={{ duration: 0.9, delay: 0.65 }}
         >
-          Scooters, enduros, tourings — livrés à votre riad. Atlas, Agafay, Essaouira vous attendent.
+          Scooters, enduros, tourings — livrés à votre riad. Casque et assurance inclus.
         </motion.p>
 
         {/* CTAs */}
         <motion.div
           className="flex flex-wrap gap-3"
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.7 }}
+          transition={{ duration: 0.9, delay: 0.78 }}
         >
           <a href="#booking" className="btn btn-gold">
             Réserver maintenant
