@@ -33,7 +33,7 @@ export default function AdminDashboard() {
           Dashboard
         </h1>
         <p style={{ fontFamily: "var(--font-body)", fontSize: "0.85rem", color: "var(--color-muted)", marginTop: "0.25rem" }}>
-          Welcome back — here&apos;s what&apos;s happening at FreedomRide
+          Welcome back — here&apos;s what&apos;s happening at MenaraRide
         </p>
       </div>
 

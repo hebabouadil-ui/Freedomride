@@ -51,7 +51,7 @@ export default function AdminSettings() {
             Site Settings
           </h1>
           <p style={{ fontFamily: "var(--font-body)", fontSize: "0.85rem", color: "var(--color-muted)", marginTop: "0.25rem" }}>
-            Global configuration for FreedomRide
+            Global configuration for MenaraRide
           </p>
         </div>
         <button

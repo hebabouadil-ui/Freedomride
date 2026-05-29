@@ -89,7 +89,7 @@ export default function BookingSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const msg = encodeURIComponent(
-      `Bonjour FreedomRide 🏍️\n\nJe souhaite réserver une moto :\n\n• Nom : ${formData.name}\n• Téléphone : ${formData.phone}\n• Moto : ${bikeOptions.find((b) => b.value === formData.moto)?.label}\n• Date de départ : ${formData.dateDepart}\n• Date de retour : ${formData.dateRetour}\n• Adresse de livraison : ${formData.adresse || "À confirmer"}\n\nMerci !`
+      `Bonjour MenaraRide 🏍️\n\nJe souhaite réserver une moto :\n\n• Nom : ${formData.name}\n• Téléphone : ${formData.phone}\n• Moto : ${bikeOptions.find((b) => b.value === formData.moto)?.label}\n• Date de départ : ${formData.dateDepart}\n• Date de retour : ${formData.dateRetour}\n• Adresse de livraison : ${formData.adresse || "À confirmer"}\n\nMerci !`
     );
     window.open(`https://wa.me/212661234567?text=${msg}`, "_blank");
     setSubmitted(true);
@@ -307,7 +307,7 @@ export default function BookingSection() {
                   Réserver — Confirmation Immédiate
                 </motion.button>
                 <motion.a
-                  href="https://wa.me/212661234567?text=Bonjour%20FreedomRide%2C%20je%20voudrais%20des%20informations%20sur%20la%20location%20de%20moto%20%C3%A0%20Marrakech"
+                  href="https://wa.me/212661234567?text=Bonjour%20MenaraRide%2C%20je%20voudrais%20des%20informations%20sur%20la%20location%20de%20moto%20%C3%A0%20Marrakech"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-whatsapp"

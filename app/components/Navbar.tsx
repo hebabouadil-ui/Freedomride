@@ -5,10 +5,10 @@ import gsap from "gsap";
 import Link from "next/link";
 
 const links = [
-  { label: "Fleet", href: "#fleet" },
-  { label: "Routes", href: "#routes" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Why Us", href: "#why-us" },
+  { label: "Motos", href: "#fleet" },
+  { label: "Tarifs", href: "#pricing" },
+  { label: "Pourquoi Nous", href: "#why-us" },
+  { label: "Avis", href: "#testimonials" },
 ];
 
 export default function Navbar() {
@@ -47,10 +47,8 @@ export default function Navbar() {
         style={{ borderBottom: scrolled ? "1px solid rgba(255,248,237,0.06)" : "none" }}
       >
         <div className="container flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
           <Link
             href="/"
-            className="text-cream no-underline"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "1rem",
@@ -58,12 +56,12 @@ export default function Navbar() {
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               color: "var(--color-cream)",
+              textDecoration: "none",
             }}
           >
-            Freedom<span style={{ color: "var(--color-gold)" }}>Ride</span>
+            Menara<span style={{ color: "var(--color-gold)" }}>Ride</span>
           </Link>
 
-          {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-8 list-none">
             {links.map((l) => (
               <li key={l.label}>
@@ -89,22 +87,20 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => handleNavClick("#booking")}
               className="btn btn-gold"
               style={{ padding: "0.625rem 1.25rem", fontSize: "0.7rem" }}
             >
-              Book Now
+              Réserver
             </button>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             className="md:hidden flex flex-col gap-1.5 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
+            aria-label="Menu"
             style={{ background: "none", border: "none", cursor: "pointer" }}
           >
             {[0, 1, 2].map((i) => (
@@ -132,7 +128,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile menu */}
         {menuOpen && (
           <div
             style={{
@@ -168,7 +163,7 @@ export default function Navbar() {
                   className="btn btn-gold"
                   style={{ width: "100%", marginTop: "0.5rem" }}
                 >
-                  Book Now
+                  Réserver
                 </button>
               </li>
             </ul>

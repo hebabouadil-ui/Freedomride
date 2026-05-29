@@ -2,7 +2,6 @@ import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import FleetSection from "./components/FleetSection";
-import RoutesSection from "./components/RoutesSection";
 import PricingSection from "./components/PricingSection";
 import WhyUsSection from "./components/WhyUsSection";
 import TestimonialsSection from "./components/TestimonialsSection";
@@ -16,7 +15,6 @@ export default function Home() {
       <main>
         <HeroSection />
         <FleetSection />
-        <RoutesSection />
         <PricingSection />
         <WhyUsSection />
         <TestimonialsSection />

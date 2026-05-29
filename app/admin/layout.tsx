@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import AdminSidebar from "./components/AdminSidebar";
 
 export const metadata: Metadata = {
-  title: "Admin — FreedomRide",
-  description: "FreedomRide admin panel",
+  title: "Admin — MenaraRide",
+  description: "MenaraRide admin panel",
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

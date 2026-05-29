@@ -88,7 +88,7 @@ export default function AdminSidebar() {
             textDecoration: "none",
           }}
         >
-          Freedom<span style={{ color: "var(--color-gold)" }}>Ride</span>
+          Menara<span style={{ color: "var(--color-gold)" }}>Ride</span>
         </Link>
         <p
           style={{

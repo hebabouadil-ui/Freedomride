@@ -14,7 +14,7 @@ const navLinks = [
 
 const contact = [
   { label: "+212 661 234 567", href: "tel:+212661234567" },
-  { label: "hello@freedomride.ma", href: "mailto:hello@freedomride.ma" },
+  { label: "hello@menararide.ma", href: "mailto:hello@menararide.ma" },
   { label: "WhatsApp Nous", href: "https://wa.me/212661234567" },
   { label: "45 Rue Bab Doukkala, Marrakech", href: "#" },
 ];
@@ -56,7 +56,7 @@ export default function Footer() {
             Livraison hôtel · Assurance incluse · Prêt en 1 heure
           </p>
           <a
-            href="https://wa.me/212661234567?text=Bonjour%20FreedomRide%20%F0%9F%8F%8D%EF%B8%8F%20Je%20souhaite%20r%C3%A9server%20une%20moto."
+            href="https://wa.me/212661234567?text=Bonjour%20MenaraRide%20%F0%9F%8F%8D%EF%B8%8F%20Je%20souhaite%20r%C3%A9server%20une%20moto."
             target="_blank"
             rel="noopener noreferrer"
             className="btn"
@@ -102,7 +102,7 @@ export default function Footer() {
                 marginBottom: "1rem",
               }}
             >
-              Freedom<span style={{ color: "var(--color-gold)" }}>Ride</span>
+              Menara<span style={{ color: "var(--color-gold)" }}>Ride</span>
             </Link>
             <p className="body-sm" style={{ color: "var(--color-muted)", maxWidth: "220px" }}>
               Location de motos premium à Marrakech. Explorez le Maroc à votre rythme — sur deux roues.
@@ -204,7 +204,7 @@ export default function Footer() {
             allowFullScreen={false}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="FreedomRide Marrakech"
+            title="MenaraRide Marrakech"
           />
         </motion.div>
 
@@ -214,7 +214,7 @@ export default function Footer() {
           style={{ borderTop: "1px solid rgba(255,248,237,0.06)", paddingTop: "1.5rem" }}
         >
           <p className="body-sm" style={{ color: "var(--color-muted)" }}>
-            © {new Date().getFullYear()} FreedomRide · Tous droits réservés · Marrakech, Maroc
+            © {new Date().getFullYear()} MenaraRide · Tous droits réservés · Marrakech, Maroc
           </p>
           <p className="body-sm" style={{ color: "var(--color-muted)" }}>
             Fait avec passion pour la route ouverte

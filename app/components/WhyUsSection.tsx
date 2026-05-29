@@ -58,7 +58,7 @@ export default function WhyUsSection() {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>Pourquoi FreedomRide</p>
+          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>Pourquoi MenaraRide</p>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <h2 className="display-section" style={{ color: "var(--color-cream)" }}>ROULEZ EN<br />CONFIANCE</h2>
             <p className="body-lg" style={{ color: "var(--color-muted)", maxWidth: "400px" }}>

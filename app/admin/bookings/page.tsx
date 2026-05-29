@@ -137,7 +137,7 @@ export default function AdminBookings() {
                   <td style={{ padding: "0.875rem 1rem" }}>
                     <div className="flex gap-2">
                       <a
-                        href={`https://wa.me/${b.phone.replace(/\D/g, "")}?text=Hi ${b.name}, your FreedomRide booking is confirmed!`}
+                        href={`https://wa.me/${b.phone.replace(/\D/g, "")}?text=Hi ${b.name}, your MenaraRide booking is confirmed!`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ background: "rgba(37,211,102,0.15)", border: "none", borderRadius: "6px", padding: "0.35rem 0.6rem", color: "#25D366", cursor: "pointer", fontSize: "0.75rem", fontFamily: "var(--font-body)", textDecoration: "none", display: "inline-flex" }}

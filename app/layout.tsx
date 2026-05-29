@@ -15,12 +15,12 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "FreedomRide — Premium Motorcycle Rental in Marrakech",
+  title: "MenaraRide — Premium Motorcycle Rental in Marrakech",
   description:
     "Explore Marrakech, the Atlas Mountains, Agafay Desert and Essaouira on a premium motorcycle. Scooters, enduro, and touring bikes available. Hotel delivery included.",
   keywords: ["motorcycle rental Marrakech", "moto rental Morocco", "scooter rental Marrakech", "enduro Morocco", "Atlas Mountains bike tour"],
   openGraph: {
-    title: "FreedomRide — Ride Morocco Your Way",
+    title: "MenaraRide — Ride Morocco Your Way",
     description: "Premium motorcycle rental in Marrakech. Explore the Atlas Mountains, Agafay Desert and beyond.",
     type: "website",
   },

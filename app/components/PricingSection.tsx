@@ -5,18 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const plans = [
   {
-    id: "half-day",
-    name: "Demi-Journée",
-    duration: "4 heures",
-    priceMAD: { scooter: 200, enduro: 280, touring: 420 },
-    priceEUR: { scooter: 18, enduro: 25, touring: 37 },
-    recommended: false,
-    features: ["4h de location", "Casque ECE inclus", "Antivol fourni", "Assurance tiers", "Plan de ville", "Support téléphonique"],
-    missing: ["GPS", "Livraison hôtel", "Assurance complète", "Support 24h/24"],
-    bikes: ["Scooter uniquement"],
-    color: "var(--color-cream)",
-  },
-  {
     id: "full-day",
     name: "Journée Complète",
     duration: "24 heures",
