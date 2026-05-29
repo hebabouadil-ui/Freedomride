@@ -10,8 +10,7 @@ import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
-// ← hero.jpg uploaded to public/images/ by the user
-const HERO_IMAGE = "/images/hero.jpg";
+const HERO_IMAGE = "/Gemini_Generated_Image_pu3yw0pu3yw0pu3y.png";
 
 const bikes = [
   { id: "scooter", label: "Scooter", sub: "125cc · Sans permis moto", price: "200 MAD" },
