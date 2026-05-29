@@ -1,261 +1,164 @@
 "use client";
 
-import { useRef } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const plans = [
   {
     id: "half-day",
-    name: "Half Day",
-    duration: "4 hours",
-    priceMAD: 200,
-    priceEUR: 18,
+    name: "Demi-Journée",
+    duration: "4 heures",
+    priceMAD: { scooter: 200, enduro: 280, touring: 420 },
+    priceEUR: { scooter: 18, enduro: 25, touring: 37 },
     recommended: false,
-    description: "Perfect for a medina loop or quick Agafay run.",
-    features: [
-      "4 hours rental",
-      "Helmet included",
-      "Lock & chain",
-      "Basic insurance",
-      "City map",
-      "Phone support",
-    ],
-    missing: ["GPS device", "Hotel delivery", "Full insurance", "24/7 support"],
-    bike: "Scooter only",
+    features: ["4h de location", "Casque ECE inclus", "Antivol fourni", "Assurance tiers", "Plan de ville", "Support téléphonique"],
+    missing: ["GPS", "Livraison hôtel", "Assurance complète", "Support 24h/24"],
+    bikes: ["Scooter uniquement"],
+    color: "var(--color-cream)",
   },
   {
     id: "full-day",
-    name: "Full Day",
-    duration: "24 hours",
-    priceMAD: 450,
-    priceEUR: 40,
+    name: "Journée Complète",
+    duration: "24 heures",
+    priceMAD: { scooter: 350, enduro: 450, touring: 700 },
+    priceEUR: { scooter: 31, enduro: 40, touring: 62 },
     recommended: true,
-    description: "The most popular option. Atlas, Agafay, coast — all yours.",
-    features: [
-      "24 hours rental",
-      "Premium helmet included",
-      "Lock & chain",
-      "Full insurance",
-      "GPS device",
-      "Hotel delivery",
-      "24/7 WhatsApp support",
-      "Route guide PDF",
-    ],
+    features: ["24h de location", "Casque premium inclus", "Antivol fourni", "Assurance tous risques", "GPS Maroc inclus", "Livraison hôtel/riad", "Support WhatsApp 24h/24", "Guide de routes PDF", "Kit de premiers secours"],
     missing: [],
-    bike: "All bikes available",
+    bikes: ["Toutes les motos"],
+    color: "var(--color-night)",
   },
   {
     id: "weekly",
-    name: "Weekly",
-    duration: "7 days",
-    priceMAD: 2500,
-    priceEUR: 220,
+    name: "Semaine",
+    duration: "7 jours",
+    priceMAD: { scooter: 1800, enduro: 2500, touring: 3800 },
+    priceEUR: { scooter: 160, enduro: 220, touring: 335 },
     recommended: false,
-    description: "Explore the entire country at your own pace.",
-    features: [
-      "7 days rental",
-      "Premium helmet + gear bag",
-      "Lock & chain",
-      "Full comprehensive insurance",
-      "GPS device",
-      "Hotel delivery",
-      "24/7 WhatsApp support",
-      "Multi-route guide",
-      "Emergency roadside",
-      "Fuel discount card",
-    ],
+    features: ["7 jours de location", "Casque premium + sac", "Antivol fourni", "Assurance tous risques", "GPS Maroc inclus", "Livraison hôtel/riad", "Support WhatsApp 24h/24", "Multi-guides d'itinéraires", "Assistance dépannage", "Carte carburant partenaire", "Deuxième casque offert"],
     missing: [],
-    bike: "All bikes available",
+    bikes: ["Toutes les motos"],
+    color: "var(--color-cream)",
   },
 ];
 
+type BikeType = "scooter" | "enduro" | "touring";
+
 export default function PricingSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
-        }
-      );
-
-      const cards = sectionRef.current?.querySelectorAll(".pricing-card");
-      if (cards) {
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            stagger: 0.12,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 70%",
-            },
-          }
-        );
-      }
-    },
-    { scope: sectionRef }
-  );
+  const [bikeType, setBikeType] = useState<BikeType>("enduro");
 
   return (
-    <section
-      ref={sectionRef}
-      id="pricing"
-      className="section overflow-clip"
-      style={{ background: "var(--color-night)" }}
-    >
+    <section id="pricing" className="section overflow-clip" style={{ background: "var(--color-night)" }}>
       <div className="container">
-        {/* Section header */}
-        <div ref={titleRef} className="mb-16 md:mb-20">
-          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>
-            Transparent Rates
-          </p>
+        <motion.div
+          className="mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>Tarifs Transparents</p>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <h2 className="display-section" style={{ color: "var(--color-cream)" }}>
-              SIMPLE<br />PRICING
-            </h2>
+            <h2 className="display-section" style={{ color: "var(--color-cream)" }}>TARIFS<br />SIMPLES</h2>
             <p className="body-lg" style={{ color: "var(--color-muted)", maxWidth: "380px" }}>
-              No hidden fees. No surprises. Just the freedom to ride with everything you need included.
+              Sans frais cachés. Casque, assurance et livraison inclus. Paiement sur place en MAD, EUR ou carte.
             </p>
           </div>
           <span className="gold-line mt-6" />
-        </div>
+        </motion.div>
+
+        {/* Bike type selector */}
+        <motion.div
+          className="flex gap-2 mb-10 p-1.5 w-fit rounded-xl"
+          style={{ background: "var(--color-charcoal)" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          {(["scooter", "enduro", "touring"] as BikeType[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => setBikeType(t)}
+              style={{
+                position: "relative",
+                padding: "0.5rem 1.25rem",
+                borderRadius: "8px",
+                fontFamily: "var(--font-display)",
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                border: "none",
+                color: bikeType === t ? "var(--color-night)" : "var(--color-muted)",
+                background: "transparent",
+                transition: "color 0.3s ease",
+                zIndex: 1,
+              }}
+            >
+              {bikeType === t && (
+                <motion.div
+                  layoutId="bikeSelector"
+                  style={{ position: "absolute", inset: 0, background: "var(--color-gold)", borderRadius: "8px", zIndex: -1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              {t === "scooter" ? "Scooter" : t === "enduro" ? "Enduro" : "Touring"}
+            </button>
+          ))}
+        </motion.div>
 
         {/* Cards */}
-        <div
-          className="grid gap-6 items-stretch"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-        >
-          {plans.map((plan) => (
-            <div
+        <div className="grid gap-6 items-stretch" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+          {plans.map((plan, i) => (
+            <motion.div
               key={plan.id}
               className="pricing-card relative flex flex-col"
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -8 }}
               style={{
-                background: plan.recommended
-                  ? "var(--color-cream)"
-                  : "var(--color-charcoal)",
+                background: plan.recommended ? "var(--color-cream)" : "var(--color-charcoal)",
                 color: plan.recommended ? "var(--color-night)" : "var(--color-cream)",
                 borderRadius: "var(--radius-card)",
-                border: plan.recommended
-                  ? "1px solid var(--color-gold)"
-                  : "1px solid rgba(255,248,237,0.07)",
+                border: plan.recommended ? "1px solid var(--color-gold)" : "1px solid rgba(255,248,237,0.07)",
                 padding: "2rem",
-                transition: "transform 0.4s var(--ease-cinematic)",
               }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLDivElement).style.transform = "translateY(-8px)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLDivElement).style.transform = "translateY(0)")
-              }
             >
               {plan.recommended && (
-                <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 label"
-                  style={{
-                    background: "var(--color-gold)",
-                    color: "var(--color-night)",
-                    padding: "0.25rem 1rem",
-                    borderRadius: "999px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Most Popular
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 label"
+                  style={{ background: "var(--color-gold)", color: "var(--color-night)", padding: "0.25rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>
+                  ✦ Le plus populaire
                 </div>
               )}
 
-              {/* Plan name + duration */}
-              <div className="mb-2">
-                <p
-                  className="label mb-1"
-                  style={{
-                    color: plan.recommended ? "var(--color-brown)" : "var(--color-gold)",
-                  }}
-                >
-                  {plan.duration}
-                </p>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.75rem",
-                    fontWeight: 800,
-                    letterSpacing: "-0.03em",
-                  }}
-                >
-                  {plan.name}
-                </h3>
-              </div>
+              <p className="label mb-1" style={{ color: plan.recommended ? "var(--color-brown)" : "var(--color-gold)" }}>
+                {plan.duration}
+              </p>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.6rem", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: "1.25rem" }}>
+                {plan.name}
+              </h3>
 
-              {/* Price */}
-              <div className="my-5" style={{ borderTop: plan.recommended ? "1px solid rgba(49,39,38,0.15)" : "1px solid rgba(255,248,237,0.08)", paddingTop: "1.25rem" }}>
-                <div className="flex items-baseline gap-2">
-                  <span
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "2.75rem",
-                      fontWeight: 800,
-                      lineHeight: 1,
-                      color: plan.recommended ? "var(--color-night)" : "var(--color-gold)",
-                    }}
-                  >
-                    {plan.priceMAD}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.9rem",
-                      color: plan.recommended
-                        ? "rgba(15,13,11,0.6)"
-                        : "var(--color-muted)",
-                    }}
-                  >
-                    MAD
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.85rem",
-                      color: plan.recommended
-                        ? "rgba(15,13,11,0.5)"
-                        : "rgba(255,248,237,0.4)",
-                    }}
-                  >
-                    / €{plan.priceEUR}
-                  </span>
-                </div>
-                <p
-                  className="body-sm mt-2"
-                  style={{
-                    color: plan.recommended
-                      ? "rgba(15,13,11,0.65)"
-                      : "var(--color-muted)",
-                  }}
-                >
-                  {plan.description}
-                </p>
-                <p
-                  className="label mt-2"
-                  style={{
-                    color: plan.recommended ? "var(--color-brown)" : "var(--color-gold)",
-                  }}
-                >
-                  {plan.bike}
+              {/* Animated price */}
+              <div style={{ borderTop: plan.recommended ? "1px solid rgba(49,39,38,0.12)" : "1px solid rgba(255,248,237,0.07)", paddingTop: "1.25rem", marginBottom: "1.25rem" }}>
+                <AnimatePresence mode="wait">
+                  <motion.div key={`${plan.id}-${bikeType}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                    <div className="flex items-baseline gap-1.5">
+                      <span style={{ fontFamily: "var(--font-display)", fontSize: "2.75rem", fontWeight: 800, lineHeight: 1, color: plan.recommended ? "var(--color-night)" : "var(--color-gold)" }}>
+                        {plan.priceMAD[bikeType]}
+                      </span>
+                      <span style={{ fontSize: "0.85rem", color: plan.recommended ? "rgba(15,13,11,0.5)" : "var(--color-muted)" }}>MAD</span>
+                      <span style={{ fontSize: "0.78rem", color: plan.recommended ? "rgba(15,13,11,0.4)" : "rgba(255,248,237,0.3)" }}>
+                        / €{plan.priceEUR[bikeType]}
+                      </span>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+                <p className="body-sm mt-1.5" style={{ color: plan.recommended ? "rgba(15,13,11,0.55)" : "var(--color-muted)" }}>
+                  {plan.bikes[0]}
                 </p>
               </div>
 
@@ -263,74 +166,40 @@ export default function PricingSection() {
               <ul className="flex flex-col gap-2.5 flex-1">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-center gap-2.5">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke={plan.recommended ? "var(--color-atlas)" : "var(--color-gold)"}
-                      strokeWidth="2.5"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    <span
-                      className="body-sm"
-                      style={{
-                        color: plan.recommended
-                          ? "rgba(15,13,11,0.8)"
-                          : "var(--color-cream)",
-                      }}
-                    >
-                      {f}
-                    </span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={plan.recommended ? "var(--color-atlas)" : "var(--color-gold)"} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span className="body-sm" style={{ color: plan.recommended ? "rgba(15,13,11,0.8)" : "var(--color-cream)" }}>{f}</span>
                   </li>
                 ))}
                 {plan.missing.map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 opacity-35">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                    <span className="body-sm" style={{ color: plan.recommended ? "rgba(15,13,11,0.4)" : "var(--color-muted)" }}>
-                      {f}
-                    </span>
+                  <li key={f} className="flex items-center gap-2.5 opacity-30">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span className="body-sm">{f}</span>
                   </li>
                 ))}
               </ul>
 
-              {/* CTA */}
-              <a
-                href="#booking"
-                className="btn mt-6"
+              <motion.a href="#booking" className="btn mt-6" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 style={{
                   background: plan.recommended ? "var(--color-night)" : "transparent",
                   color: plan.recommended ? "var(--color-cream)" : "var(--color-cream)",
-                  border: plan.recommended
-                    ? "1.5px solid var(--color-night)"
-                    : "1.5px solid rgba(255,248,237,0.2)",
+                  border: plan.recommended ? "1.5px solid var(--color-night)" : "1.5px solid rgba(255,248,237,0.2)",
                   width: "100%",
-                }}
-              >
-                {plan.recommended ? "Book Full Day" : "Get Started"}
-              </a>
-            </div>
+                }}>
+                Réserver · {plan.name}
+              </motion.a>
+            </motion.div>
           ))}
         </div>
 
-        {/* Note */}
-        <p
-          className="body-sm text-center mt-10"
+        <motion.p
+          className="body-sm text-center mt-8"
           style={{ color: "var(--color-muted)" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
         >
-          All prices include VAT · Security deposit 500 MAD (refundable) · Fuel not included
-        </p>
+          TVA incluse · Dépôt de garantie 500 MAD (remboursé) · Carburant non inclus · Paiement en MAD, EUR ou carte
+        </motion.p>
       </div>
     </section>
   );

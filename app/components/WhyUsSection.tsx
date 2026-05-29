@@ -1,178 +1,128 @@
 "use client";
 
-import { useRef } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from "framer-motion";
 
 const features = [
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-    title: "Full Insurance Coverage",
-    desc: "All rentals include comprehensive third-party liability insurance. Your ride, fully covered.",
+    icon: "🛡️",
+    title: "Assurance Tous Risques",
+    desc: "Couverture complète incluse dans chaque location. Responsabilité civile, dommages matériels, assistance rapatriement. Zéro tracas.",
+    stat: "100%",
+    statLabel: "couverture",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
-      </svg>
-    ),
-    title: "Hotel & Riad Delivery",
-    desc: "We deliver your bike directly to your accommodation anywhere in Marrakech — no extra charge.",
+    icon: "🏨",
+    title: "Livraison Riad / Hôtel",
+    desc: "Nous livrons votre moto directement à votre adresse dans la Médina, Gueliz ou Hivernage. Pas de déplacement — on vient à vous.",
+    stat: "0 MAD",
+    statLabel: "frais de livraison",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" />
-      </svg>
-    ),
-    title: "Helmets & Gear Included",
-    desc: "Premium ECE-certified helmets, gloves, and hi-vis vest with every rental. Safety first.",
+    icon: "⛑️",
+    title: "Casque & Équipement",
+    desc: "Casques ECE 22.06 certifiés, gants, gilet haute visibilité avec chaque location. Un deuxième casque offert pour les locations à la semaine.",
+    stat: "ECE 22.06",
+    statLabel: "norme européenne",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-      </svg>
-    ),
-    title: "24/7 WhatsApp Support",
-    desc: "Got a flat in Agafay at midnight? Message us. We're always reachable for our riders.",
+    icon: "💬",
+    title: "Support WhatsApp 24h/24",
+    desc: "Notre équipe répond en français, arabe et anglais à toute heure. Crevaison à Agafay à 23h ? On s'en occupe.",
+    stat: "<15 min",
+    statLabel: "temps de réponse",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="12" cy="12" r="3" /><path d="M2 12h3M19 12h3M12 2v3M12 19v3" />
-      </svg>
-    ),
-    title: "GPS Device Available",
-    desc: "Add a fully-charged GPS unit loaded with Morocco maps. Never get lost in the Atlas.",
+    icon: "🗺️",
+    title: "GPS Maroc Inclus",
+    desc: "Appareil GPS préchargé avec les cartes du Maroc, les itinéraires recommandés et les points d'intérêt. Signaux télécom indépendants.",
+    stat: "400+",
+    statLabel: "POIs Maroc",
   },
   {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" />
-      </svg>
-    ),
-    title: "No License for Scooters",
-    desc: "125cc scooters require no motorcycle license — only a valid car driving license (category B).",
+    icon: "✅",
+    title: "Sans Permis Moto",
+    desc: "Les scooters 125–155cc ne nécessitent que votre permis voiture (catégorie B). Disponible pour la majorité de nos visiteurs internationaux.",
+    stat: "155cc",
+    statLabel: "sans permis moto",
   },
 ];
 
 export default function WhyUsSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1, y: 0, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
-        }
-      );
-
-      const items = sectionRef.current?.querySelectorAll(".why-item");
-      if (items) {
-        gsap.fromTo(
-          items,
-          { opacity: 0, filter: "blur(12px)", y: 30 },
-          {
-            opacity: 1,
-            filter: "blur(0px)",
-            y: 0,
-            duration: 1,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 65%",
-            },
-          }
-        );
-      }
-    },
-    { scope: sectionRef }
-  );
-
   return (
-    <section
-      ref={sectionRef}
-      id="why-us"
-      className="section overflow-clip dot-pattern"
-      style={{ background: "var(--color-charcoal)" }}
-    >
+    <section id="why-us" className="section overflow-clip dot-pattern" style={{ background: "var(--color-charcoal)" }}>
       <div className="container">
-        {/* Header */}
-        <div ref={titleRef} className="mb-16 md:mb-20">
-          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>
-            Why FreedomRide
-          </p>
+        <motion.div
+          className="mb-16 md:mb-20"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="label mb-4" style={{ color: "var(--color-gold)" }}>Pourquoi FreedomRide</p>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <h2 className="display-section" style={{ color: "var(--color-cream)" }}>
-              RIDE WITH<br />CONFIDENCE
-            </h2>
-            <p className="body-lg" style={{ color: "var(--color-muted)", maxWidth: "380px" }}>
-              We&apos;ve thought of everything so you can focus on the road ahead.
+            <h2 className="display-section" style={{ color: "var(--color-cream)" }}>ROULEZ EN<br />CONFIANCE</h2>
+            <p className="body-lg" style={{ color: "var(--color-muted)", maxWidth: "400px" }}>
+              Nous avons pensé à tout pour que vous ne pensiez qu'à la route.
             </p>
           </div>
           <span className="gold-line mt-6" />
-        </div>
+        </motion.div>
 
-        {/* 2x3 grid */}
-        <div
-          className="grid gap-6"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-        >
+        <div className="grid gap-5" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
           {features.map((f, i) => (
-            <div
+            <motion.div
               key={i}
-              className="why-item card-dark p-7 flex flex-col gap-4"
+              className="card-dark p-7 flex flex-col gap-4"
+              initial={{ opacity: 0, filter: "blur(12px)", y: 30 }}
+              whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 1, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
             >
-              {/* Icon */}
-              <div
-                style={{
-                  color: "var(--color-gold)",
-                  background: "rgba(201,162,39,0.1)",
-                  width: "52px",
-                  height: "52px",
-                  borderRadius: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {f.icon}
+              {/* Icon + stat */}
+              <div className="flex items-start justify-between">
+                <div style={{ fontSize: "2rem", lineHeight: 1 }}>{f.icon}</div>
+                <div className="text-right">
+                  <p style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 800, color: "var(--color-gold)", lineHeight: 1 }}>{f.stat}</p>
+                  <p className="label" style={{ color: "var(--color-muted)", fontSize: "0.58rem" }}>{f.statLabel}</p>
+                </div>
               </div>
 
-              {/* Content */}
-              <div>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "0.95rem",
-                    fontWeight: 700,
-                    letterSpacing: "-0.02em",
-                    color: "var(--color-cream)",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  {f.title}
-                </h3>
-                <p className="body-sm" style={{ color: "var(--color-muted)" }}>
-                  {f.desc}
-                </p>
-              </div>
-            </div>
+              <div style={{ width: "2rem", height: "2px", background: "var(--color-gold)" }} />
+
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "0.92rem", fontWeight: 700, letterSpacing: "-0.02em", color: "var(--color-cream)" }}>
+                {f.title}
+              </h3>
+              <p className="body-sm" style={{ color: "var(--color-muted)", lineHeight: 1.75 }}>{f.desc}</p>
+            </motion.div>
           ))}
         </div>
+
+        {/* Trust strip */}
+        <motion.div
+          className="mt-16 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6"
+          style={{ background: "rgba(201,162,39,0.06)", border: "1px solid rgba(201,162,39,0.12)" }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <div>
+            <p style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem", fontWeight: 700, color: "var(--color-cream)" }}>
+              Enregistrés au Registre du Commerce de Marrakech
+            </p>
+            <p className="body-sm mt-1" style={{ color: "var(--color-muted)" }}>
+              RC Marrakech N° 123456 · Patente N° 78901234 · Assurance Wafa Assurance
+            </p>
+          </div>
+          <div className="flex items-center gap-4 flex-shrink-0">
+            {["Wafa Assurance", "Google 4.9★", "TripAdvisor"].map((badge) => (
+              <div key={badge} className="label" style={{ background: "rgba(255,248,237,0.07)", padding: "0.4rem 0.8rem", borderRadius: "6px", color: "var(--color-muted)", whiteSpace: "nowrap" }}>
+                {badge}
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
